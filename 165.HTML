@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Devine le Nombre</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+        }
+
+        #game-container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        input[type="number"] {
+            padding: 10px;
+            font-size: 16px;
+            width: 100%;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #message {
+            font-size: 18px;
+            color: #333;
+            margin-top: 20px;
+        }
+
+        #restart {
+            margin-top: 20px;
+            display: none;
+            padding: 10px 20px;
+            background-color: #28a745;
+        }
+
+        #restart:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <h1>Devine le Nombre</h1>
+        <p>Choisis un nombre entre 1 et 100.</p>
+        <input type="number" id="guess-input" placeholder="Entre ton nombre ici" />
+        <button id="submit-btn">Valider</button>
+        <div id="message"></div>
+        <button id="restart">Rejouer</button>
+    </div>
+
+    <script>
+        let randomNumber = Math.floor(Math.random() * 100) + 1;
+        let attempts = 0;
+
+        const guessInput = document.getElementById('guess-input');
+        const message = document.getElementById('message');
+        const submitBtn = document.getElementById('submit-btn');
+        const restartBtn = document.getElementById('restart');
+
+        submitBtn.addEventListener('click', () => {
+            const userGuess = parseInt(guessInput.value);
+            attempts++;
+
+            if (isNaN(userGuess) || userGuess < 1 || userGuess > 100) {
+                message.textContent = "Entre un nombre valide entre 1 et 100.";
+                message.style.color = 'red';
+            } else if (userGuess === randomNumber) {
+                message.textContent = `Bravo ! Tu as trouvé le nombre ${randomNumber} en ${attempts} essais.`;
+                message.style.color = 'green';
+                submitBtn.disabled = true;
+                restartBtn.style.display = 'inline-block';
+            } else if (userGuess < randomNumber) {
+                message.textContent = "C'est plus grand !";
+                message.style.color = 'blue';
+            } else {
+                message.textContent = "C'est plus petit !";
+                message.style.color = 'blue';
+            }
+        });
+
+        restartBtn.addEventListener('click', () => {
+            randomNumber = Math.floor(Math.random() * 100) + 1;
+            attempts = 0;
+            guessInput.value = '';
+            message.textContent = '';
+            submitBtn.disabled = false;
+            restartBtn.style.display = 'none';
+        });
+    </script>
+</body>
+</html>
